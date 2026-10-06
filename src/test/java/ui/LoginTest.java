@@ -1,15 +1,16 @@
-
 package ui;
 
 import com.veysauction.base.BaseTest;
 import com.veysauction.pages.LoginPage;
+import com.veysauction.utils.JsonTestDataUtil;
+import com.veysauction.utils.RetryAnalyzer;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
 public class LoginTest extends BaseTest {
 
-    // Pause to make browser actions visible during the demo.
     private void pause(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -19,7 +20,67 @@ public class LoginTest extends BaseTest {
         }
     }
 
-    @Test(groups = {"smoke", "regression"})
+    @DataProvider(name = "loginData")
+    public Object[][] loginData() {
+        return JsonTestDataUtil.readLoginData(
+                "testdata/login-data.json"
+        );
+    }
+
+    @Test(
+            dataProvider = "loginData",
+            groups = {"smoke", "regression"}
+    )
+    public void loginWithJsonData(
+            String username,
+            String password,
+            boolean expectedLogin
+    ) {
+
+        System.out.println(
+                "TEST: JSON LOGIN DATA"
+                        + " | username=" + username
+                        + " | expectedLogin=" + expectedLogin
+        );
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.open();
+        pause(1000);
+
+        loginPage.enterUsername(username);
+        pause(500);
+
+        loginPage.enterPassword(password);
+        pause(500);
+
+        loginPage.clickLogin();
+        pause(2000);
+
+        try {
+            driver.switchTo().alert().accept();
+        } catch (org.openqa.selenium.NoAlertPresentException ignored) {
+        }
+
+        pause(500);
+
+        boolean loggedIn =
+                !driver.getCurrentUrl().contains("/login");
+
+        assertTrue(
+                loggedIn == expectedLogin,
+                "Actual login result does not match expected result."
+        );
+
+        System.out.println(
+                "PASS: expectedLogin=" + expectedLogin
+        );
+    }
+
+    @Test(
+            groups = {"smoke", "regression"},
+            retryAnalyzer = RetryAnalyzer.class
+    )
     public void validLoginShouldSucceed() {
 
         System.out.println("TEST: VALID LOGIN");
@@ -89,11 +150,9 @@ public class LoginTest extends BaseTest {
         loginPage.clickLogin();
         pause(1500);
 
-        // Close the JavaScript alert if it appears.
         try {
             driver.switchTo().alert().accept();
         } catch (org.openqa.selenium.NoAlertPresentException ignored) {
-            // No alert is present; continue the test.
         }
 
         pause(1000);

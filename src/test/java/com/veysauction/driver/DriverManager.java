@@ -1,4 +1,3 @@
-
 package com.veysauction.driver;
 
 import com.veysauction.config.Config;
@@ -10,12 +9,17 @@ import java.time.Duration;
 
 public final class DriverManager {
 
-    private static WebDriver driver;
+    private static final ThreadLocal<WebDriver> DRIVER =
+            new ThreadLocal<>();
 
     private DriverManager() {}
 
     public static WebDriver getDriver() {
+
+        WebDriver driver = DRIVER.get();
+
         if (driver == null) {
+
             ChromeOptions options = new ChromeOptions();
 
             if (Config.HEADLESS) {
@@ -31,15 +35,20 @@ public final class DriverManager {
 
             driver.manage().timeouts()
                     .pageLoadTimeout(Duration.ofSeconds(30));
+
+            DRIVER.set(driver);
         }
 
-        return driver;
+        return DRIVER.get();
     }
 
     public static void quitDriver() {
+
+        WebDriver driver = DRIVER.get();
+
         if (driver != null) {
             driver.quit();
-            driver = null;
+            DRIVER.remove();
         }
     }
 }

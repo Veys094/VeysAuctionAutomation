@@ -1,0 +1,17 @@
+[
+  {
+    "username": "testuser",
+    "password": "12345",
+    "expectedLogin": true
+  },
+  {
+    "username": "wrong_user_qa_2026",
+    "password": "12345",
+    "expectedLogin": false
+  },
+  {
+    "username": "testuser",
+    "password": "wrongpassword",
+    "expectedLogin": false
+  }
+]

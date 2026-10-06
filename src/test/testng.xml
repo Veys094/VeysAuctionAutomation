@@ -3,7 +3,8 @@
 
 <suite name="VeysAuctionAutomationSuite"
        verbose="1"
-       parallel="false">
+       parallel="classes"
+       thread-count="4">
 
     <test name="All Automation Tests">
         <packages>
