@@ -40,3 +40,7 @@ build/
 .idea/
 kipping...
 oft Corporation. All rights reserved.
+target/
+allure-results/
+allure-report/
+.allure/
