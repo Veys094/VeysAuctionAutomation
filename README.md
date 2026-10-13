@@ -320,6 +320,18 @@ Headless rejimdə testləri işə salmaq üçün:
 
 Testlərin icrası zamanı nəticələr IntelliJ IDEA-nın Run bölməsində göstərilir.
 
+## Allure hesabati
+ Avtomatlaşdirilmiş testləri işə saldiqdan sonra Allure HTML hesabatini yaradmaq ücün aşaqdaki əmri icra edin:
+ 
+    mvn allure:report
+
+ Hesabat aşagidaki qovluqda yaradilacaq:
+ 
+    target/site/allure-maven-plugin/index.html
+
+ Test nəticələrinə,ugurlu və ugursuz testlərə,həmçinin hər bir testin icra təfərrüatlarina baxmaq üçün index.html faylini brauzerda açin.
+
+
 ## 14. Test nəticələri
 
 Layihənin son tam test icrasının nəticələri:
@@ -406,3 +418,53 @@ Son tam test icrasında 26 testdən 26-sı uğurla keçib.
 Test nəticəsi:
 
     26 Passed, 0 Failed, 0 Skipped
+
+
+## 20. Faydalı əmrlər və testlərin işə salınması
+
+Bu bölmədə layihənin testlərini işə salmaq, test nəticələrini əldə etmək, Allure hesabatı yaratmaq və GitHub-a dəyişiklikləri göndərmək üçün istifadə olunan əsas əmrlər göstərilir.
+
+### Maven və test əmrləri
+
+| Əmr                         | İzah                                                         |
+| --------------------------- | ------------------------------------------------------------ |
+| `mvn test`                  | Bütün konfiqurasiya edilmiş testləri işə salır.              |
+| `mvn test -Denv=local`      | Testləri lokal mühitdə işə salır.                            |
+| `mvn test -Denv=qa`         | Testləri QA mühitində işə salır.                             |
+| `mvn test -Dheadless=true`  | Testləri brauzerin qrafik pəncərəsi olmadan işə salır.       |
+| `mvn test -Dheadless=false` | Testləri brauzerin görünən pəncərəsində işə salır.           |
+| `mvn clean`                 | Əvvəlki build nəticələrini təmizləyir.                       |
+| `mvn clean test`            | Build nəticələrini təmizləyir və testləri yenidən işə salır. |
+| `mvn -Dtest=LoginTest test` | Yalnız `LoginTest` sinfindəki testləri işə salır.            |
+
+### Allure hesabatı əmrləri
+
+| Əmr                 | İzah                                        |
+| ------------------- | ------------------------------------------- |
+| `mvn allure:report` | Allure HTML hesabatını yaradır.             |
+| `mvn allure:serve`  | Allure hesabatını yaradaraq brauzerdə açır. |
+
+Hesabatın əsas faylı:
+
+`target/site/allure-maven-plugin/index.html`
+
+### Git və GitHub əmrləri
+
+| Əmr                                                               | İzah                                               |
+| ----------------------------------------------------------------- | -------------------------------------------------- |
+| `git status`                                                      | Fayllardakı dəyişikliklərin vəziyyətini göstərir.  |
+| `git add .`                                                       | Bütün dəyişiklikləri commit üçün hazırlayır.       |
+| `git add .gitignore pom.xml src/test/resources/allure.properties` | Göstərilən faylları commit üçün hazırlayır.        |
+| `git commit -m "Configure Allure TestNG reporting"`               | Dəyişiklikləri qeyd edir və commit yaradır.        |
+| `git push`                                                        | Commit-ləri uzaq GitHub repozitoriyasına göndərir. |
+| `git log --oneline`                                               | Commit tarixçəsini qısa formada göstərir.          |
+
+### IntelliJ IDEA vasitəsilə testlərin işə salınması
+
+1. Layihəni IntelliJ IDEA-da açın.
+2. Layihənin kök qovluğunda yerləşən `testng.xml` faylını tapın.
+3. Fayl üzərində sağ klik edin.
+4. **Run** seçimini seçin.
+5. Testlərin nəticələrini **Run** pəncərəsində yoxlayın.
+
+**Qeyd:** `mvn test`, `mvn test -Denv=qa`, `mvn test -Dheadless=true` və `mvn allure:report` layihənin mövcud README-sində göstərilib. Digər əmrlər faydalı standart variantlardır; onların işləməsi layihənin konfiqurasiyasından asılıdır.
