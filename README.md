@@ -90,6 +90,12 @@ Layihə Page Object Model arxitekturası əsasında təşkil edilib.
             |
             |-- testdata/
                 |-- login-data.json
+        |-- test/resources/
+            | 
+                |-- allure.properties
+        |
+            |-- testdata/
+                |-- login-data.json
 
 ## 4. UI Automation
 
